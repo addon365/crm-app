@@ -7,6 +7,7 @@ class User {
   User({this.id, this.userId, this.userName, this.password});
 
   factory User.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return User(
         id: json['id'], userId: json['userId'], userName: json['userName']);
   }
@@ -17,5 +18,4 @@ class User {
       'userName': userName,
     };
   }
-
 }
