@@ -28,4 +28,10 @@ class AppointmentStatus {
         updatedBy: User.fromJson(map['updatedBy']),
         status: Status.fromJson(map['status']));
   }
+
+  void copyFrom(AppointmentStatus appointmentStatus) {
+    assignedTo=appointmentStatus.assignedTo;
+    updatedBy=appointmentStatus.updatedBy;
+    status=appointmentStatus.status;
+  }
 }

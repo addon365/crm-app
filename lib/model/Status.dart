@@ -15,4 +15,6 @@ class Status {
     });
     return statuses;
   }
+  bool operator ==(o) => o is Status && o.name == name;
+  int get hashCode => name.hashCode;
 }

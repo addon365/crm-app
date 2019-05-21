@@ -1,4 +1,5 @@
 import 'package:crm_app/dependency/constants.dart';
+import 'package:crm_app/edit_appointment_page.dart';
 import 'package:crm_app/login_page.dart';
 import 'package:crm_app/model/appointment-status.dart';
 import 'package:crm_app/model/appointment.dart';
@@ -25,16 +26,19 @@ class _HomePageState extends State<HomePage> {
 
     repository.fetchStatuses().then((statuses) {
       Constants.statuses = statuses;
+      print(Constants.statuses);
     });
+
     onRefresh();
   }
 
-  Future<void> onRefresh() {
+  Future<bool> onRefresh() {
     repository.fetchAppointments().then((appointments) {
       setState(() {
         this.appointments = appointments;
       });
     });
+    return Future.value(true);
   }
 
   @override
@@ -51,7 +55,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: RefreshIndicator(
-          child: appointments == null
+          child: appointments == null || appointments.length==0
               ? Center(
                   child: InkWell(
                       onTap: onRefresh, child: Text("No appointments found.")))
@@ -59,17 +63,20 @@ class _HomePageState extends State<HomePage> {
                   itemCount: appointments.length,
                   itemBuilder: (context, index) {
                     Appointment appointment = appointments[index];
-                    AppointmentStatus status =
-                        appointment.statuses[appointment.statuses.length - 1];
+                    AppointmentStatus status = appointment.currentStatus;
                     return ExpansionTile(
                       title: Text(appointment.customer.user.userName),
                       leading: _buildLeading(status),
                       children: <Widget>[
-                        Text(status.comments),
+                        Text(status.comments != null ? status.comments : ""),
                         ButtonBar(
                           children: <Widget>[
                             FlatButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, EditAppointmentPage.routeName,
+                                    arguments: appointment);
+                              },
                               child: Text("Edit"),
                               textColor: Theme.of(context).primaryColor,
                             )
