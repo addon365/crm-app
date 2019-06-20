@@ -27,7 +27,8 @@ class UserRepository {
       userDao.insert(user);
       return user;
     } else {
-      throw Exception(response.body);
+      var error=json.decode(response.body);
+      throw Exception(error["message"]);
     }
   }
 

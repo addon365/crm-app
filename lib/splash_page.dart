@@ -30,15 +30,8 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          color: Theme.of(context).primaryColor,
-          child: Center(
-              child: Text(
-            "Addon Technologies Pvt Ltd",
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold),
-          ))),
+        child: Image.asset("assets/splash.png"),
+      ),
     );
   }
 }

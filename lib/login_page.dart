@@ -58,80 +58,75 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget loadingIndicator = _loading
-        ? new Container(
-            color: Colors.grey[300],
-            width: 70.0,
-            height: 70.0,
-            child: new Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: new Center(child: new CircularProgressIndicator())),
-          )
-        : new Container();
-
     return new Scaffold(
         key: mainKey,
         appBar: AppBar(title: Text("Login")),
-        body: new Form(
-          key: formKey,
-          child: new Center(
-              child:
-                  new ListView(padding: EdgeInsets.all(5), children: <Widget>[
-            Image.asset(
-              "assets/login.png",
-              height: 200,
-              width: 200,
+        body: Stack(
+          children: <Widget>[
+            Center(child: _loading ? CircularProgressIndicator() : Text("")),
+            new Form(
+              key: formKey,
+              child: new Center(
+                  child: new ListView(
+                      padding: EdgeInsets.all(5),
+                      children: <Widget>[
+                    Image.asset(
+                      "assets/splash.png",
+                      height: 200,
+                      width: 200,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Center(
+                          child: Text(
+                        "Employee Login",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                    TextFormField(
+                        decoration: new InputDecoration(
+                            labelText: "User Id",
+                            icon: Icon(
+                              Icons.face,
+                              color: Theme.of(context).accentColor,
+                            )),
+                        controller: userIdController,
+                        validator: (val) {
+                          if (val.length == 0) {
+                            return "user id cannot be empty";
+                          }
+                          return null;
+                        },
+                        autofocus: true,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text),
+                    TextFormField(
+                        controller: passwordController,
+                        decoration: new InputDecoration(
+                            labelText: "Password",
+                            icon: Icon(
+                              FontAwesomeIcons.key,
+                              color: Theme.of(context).accentColor,
+                            )),
+                        obscureText: true,
+                        validator: (val) {
+                          if (val.length == 0) {
+                            return "Password cannot be empty.";
+                          } else {
+                            return null;
+                          }
+                        },
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.text),
+                    RaisedButton(
+                      onPressed: _loading ? null : doLogin,
+                      child: Text("Login"),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ])),
             ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Center(
-                  child: Text(
-                "Employee Login",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              )),
-            ),
-            TextFormField(
-                decoration: new InputDecoration(
-                    labelText: "User Id",
-                    icon: Icon(
-                      Icons.face,
-                      color: Theme.of(context).accentColor,
-                    )),
-                controller: userIdController,
-                validator: (val) {
-                  if (val.length == 0) {
-                    return "user id cannot be empty";
-                  }
-                  return null;
-                },
-                keyboardType: TextInputType.text),
-            TextFormField(
-                controller: passwordController,
-                decoration: new InputDecoration(
-                    labelText: "Password",
-                    icon: Icon(
-                      FontAwesomeIcons.key,
-                      color: Theme.of(context).accentColor,
-                    )),
-                obscureText: true,
-                validator: (val) {
-                  if (val.length == 0) {
-                    return "Password cannot be empty.";
-                  } else {
-                    return null;
-                  }
-                },
-                keyboardType: TextInputType.text),
-            RaisedButton(
-              onPressed: doLogin,
-              child: Text("Login"),
-              color: Theme.of(context).primaryColor,
-            ),
-            new Align(
-              child: loadingIndicator,
-              alignment: FractionalOffset.center,
-            )
-          ])),
+          ],
         ));
   }
 }

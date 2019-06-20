@@ -124,7 +124,12 @@ class _EditAppointmentPageState extends State<EditAppointmentPage> {
     AppointmentRepository.getRepository()
         .putAppointment(this.widget.appointment)
         .then((result) {
-      Navigator.pop(context);
+      if (result != null) {
+        scaffoldKey.currentState
+            .showSnackBar(new SnackBar(content: Text(result)));
+      } else {
+        Navigator.pop(context);
+      }
     }).catchError((onError) {
       print(onError);
     });

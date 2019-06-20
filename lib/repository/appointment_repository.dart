@@ -19,8 +19,8 @@ class AppointmentRepository {
 
   Future<List<Appointment>> fetchAppointments() async {
     String url = '$baseUrl/Appointments';
-    String userId=UserRepository.currentUser.id;
-    String queryParam="$url?userId=$userId";
+    String userId = UserRepository.currentUser.id;
+    String queryParam = "$url?userId=$userId";
     var result = await http.get(queryParam);
     if (result.statusCode == 200) {
       var mapList = List<Map<String, dynamic>>.from(json.decode(result.body));
@@ -52,7 +52,7 @@ class AppointmentRepository {
     }
   }
 
-  Future<bool> putAppointment(Appointment appointment) async {
+  Future<String> putAppointment(Appointment appointment) async {
     String url = '$baseUrl/Appointments';
     String appointmentJson = json.encode(appointment.toJson());
     print(appointmentJson);
@@ -64,10 +64,11 @@ class AppointmentRepository {
         body: appointmentJson);
     if (result.statusCode == 200) {
       print(result.body);
-      return true;
+      return null;
     } else {
-      print(result.body);
-      return false;
+      var map = json.decode(result.body);
+
+      return map["Message"];
     }
   }
 }

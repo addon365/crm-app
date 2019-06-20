@@ -1,5 +1,4 @@
 import 'package:crm_app/dependency/constants.dart';
-import 'package:crm_app/edit_appointment_page.dart';
 import 'package:crm_app/login_page.dart';
 import 'package:crm_app/model/appointment-status.dart';
 import 'package:crm_app/model/appointment.dart';
@@ -7,6 +6,8 @@ import 'package:crm_app/repository/appointment_repository.dart';
 import 'package:crm_app/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'edit_appointment_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/home';
@@ -36,6 +37,7 @@ class _HomePageState extends State<HomePage> {
     repository.fetchAppointments().then((appointments) {
       setState(() {
         this.appointments = appointments;
+        print(this.appointments);
       });
     });
     return Future.value(true);
@@ -55,7 +57,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: RefreshIndicator(
-          child: appointments == null || appointments.length==0
+          child: appointments == null || appointments.length == 0
               ? Center(
                   child: InkWell(
                       onTap: onRefresh, child: Text("No appointments found.")))
@@ -64,26 +66,17 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     Appointment appointment = appointments[index];
                     AppointmentStatus status = appointment.currentStatus;
-                    return ExpansionTile(
-                      title: Text(appointment.customer.user.userName),
-                      leading: _buildLeading(status),
-                      children: <Widget>[
-                        Text(status.comments != null ? status.comments : ""),
-                        ButtonBar(
-                          children: <Widget>[
-                            FlatButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, EditAppointmentPage.routeName,
-                                    arguments: appointment);
-                              },
-                              child: Text("Edit"),
-                              textColor: Theme.of(context).primaryColor,
-                            )
-                          ],
-                        )
-                      ],
-                    );
+                    return ListTile(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, EditAppointmentPage.routeName,
+                              arguments: appointment);
+                        },
+                        title: Text(appointment.lead.user.userName),
+                        subtitle: Text(
+                            status.comments != null ? status.comments : ""),
+                        leading: _buildLeading(status),
+                        trailing: Icon(Icons.keyboard_arrow_right));
                   }),
           onRefresh: onRefresh),
     );

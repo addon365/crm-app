@@ -2,8 +2,14 @@ import 'package:crm_app/edit_appointment_page.dart';
 import 'package:crm_app/model/appointment.dart';
 import 'package:crm_app/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-void main() => runApp(MyApp());
+import 'dependency/constants.dart';
+void main() {
+
+    setMode(kReleaseMode);
+
+  runApp(MyApp());}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

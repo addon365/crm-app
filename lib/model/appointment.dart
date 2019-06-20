@@ -1,17 +1,19 @@
 import 'package:crm_app/model/appointment-status.dart';
-import 'package:crm_app/model/customer.dart';
+
+import 'lead.dart';
 
 class Appointment {
   String id;
   AppointmentStatus currentStatus;
-  Customer customer;
+  Lead lead;
   DateTime appointmentDate;
 
-  Appointment(
-      {this.id, this.currentStatus, this.customer, this.appointmentDate});
+  Appointment({this.id, this.currentStatus, this.lead, this.appointmentDate});
 
   static List<Appointment> fromJsonArray(List<Map<String, dynamic>> mapList) {
     List<Appointment> appointmentList = new List<Appointment>();
+    if (mapList.length == 0) return appointmentList;
+
     mapList.forEach((map) {
       appointmentList.add(Appointment.fromJson(map));
     });
@@ -21,14 +23,14 @@ class Appointment {
   static Appointment fromJson(Map<String, dynamic> map) {
     return Appointment(
         id: map['id'],
-        customer: Customer.fromJson(map['customer']),
+        lead: Lead.fromJson(map['lead']),
         currentStatus: AppointmentStatus.fromJson(map['currentStatus']));
   }
 
   Map<String, dynamic> toJson() {
     return {
       "Id": id,
-      "CustomerId": customer.id,
+      "LeadId": lead.id,
       "AppiontmentDate": appointmentDate,
       "currentStatus": {
         "StatusId": currentStatus.status.id,
