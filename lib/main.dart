@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 import 'dependency/constants.dart';
+import 'model/appointment-view-model.dart';
 void main() {
 
     setMode(kReleaseMode);
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         if (settings.name == EditAppointmentPage.routeName) {
 
           return MaterialPageRoute(builder: (BuildContext context) {
-            final Appointment appointment = settings.arguments;
+            final AppointmentViewModel appointment = settings.arguments;
             return EditAppointmentPage(appointment);
           });
         }

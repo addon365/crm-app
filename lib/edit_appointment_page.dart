@@ -8,12 +8,19 @@ import 'package:crm_app/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'model/appointment-view-model.dart';
+import 'model/user.dart';
+import 'repository/status_repository.dart';
+
 class EditAppointmentPage extends StatefulWidget {
   static const routeName = "/edit-appointment";
-  Appointment appointment;
+  AppointmentViewModel viewModel;
 
-  EditAppointmentPage(Appointment appointment) {
-    this.appointment = appointment;
+
+  EditAppointmentPage(AppointmentViewModel viewModel) {
+
+    this.viewModel=viewModel;
+
   }
 
   @override
@@ -21,17 +28,24 @@ class EditAppointmentPage extends StatefulWidget {
 }
 
 class _EditAppointmentPageState extends State<EditAppointmentPage> {
+  StatusRepository statusRepository;
+
   Status selectedStatus;
+  User selectedUser;
   final TextEditingController controller = new TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-
+  AppointmentViewModel viewModel;
   @override
   void initState() {
     super.initState();
-    AppointmentStatus appointmentStatus = new AppointmentStatus();
-    appointmentStatus.copyFrom(this.widget.appointment.currentStatus);
-    this.widget.appointment.currentStatus = appointmentStatus;
-    selectedStatus = this.widget.appointment.currentStatus.status;
+    statusRepository=StatusRepository.getRepository();
+    viewModel=this.widget.viewModel;
+
+    selectedUser=new User(
+      id: viewModel.assignedToId,
+      userName: viewModel.assignedTo
+    );
+    selectedStatus=statusRepository.findById(viewModel.statusId);
     AppointmentRepository.getRepository().fetchEmployees().then((employees) {
       Constants.employees = employees;
     });
@@ -39,7 +53,7 @@ class _EditAppointmentPageState extends State<EditAppointmentPage> {
 
   @override
   Widget build(BuildContext context) {
-    Appointment appointment = this.widget.appointment;
+
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -50,7 +64,7 @@ class _EditAppointmentPageState extends State<EditAppointmentPage> {
         child: Column(
           children: <Widget>[
             ListTile(
-              title: Text(appointment.currentStatus.assignedTo.userName,
+              title: Text(selectedUser.userName,
                   style: TextStyle(fontWeight: FontWeight.bold)),
               trailing: Icon(FontAwesomeIcons.chevronRight),
               onTap: chooseCustomer,
@@ -104,7 +118,7 @@ class _EditAppointmentPageState extends State<EditAppointmentPage> {
     var result = await Navigator.pushNamed(context, EmployeeListPage.routeName);
     if (result != null) {
       setState(() {
-        this.widget.appointment.currentStatus.assignedTo = result;
+        selectedUser=result;
       });
     }
   }
@@ -117,12 +131,12 @@ class _EditAppointmentPageState extends State<EditAppointmentPage> {
       scaffoldKey.currentState.showSnackBar(snackbar);
       return;
     }
-    Appointment appointment = this.widget.appointment;
-    appointment.currentStatus.comments = controller.text;
-    appointment.currentStatus.updatedBy = UserRepository.currentUser;
-    appointment.currentStatus.status = selectedStatus;
+    viewModel.statusId=selectedStatus.id;
+    viewModel.comments=controller.text;
+    viewModel.assignedToId=selectedUser.id;
+
     AppointmentRepository.getRepository()
-        .putAppointment(this.widget.appointment)
+        .putAppointment(viewModel)
         .then((result) {
       if (result != null) {
         scaffoldKey.currentState

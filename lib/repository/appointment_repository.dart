@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crm_app/dependency/constants.dart';
 import 'package:crm_app/model/Status.dart';
+import 'package:crm_app/model/appointment-view-model.dart';
 import 'package:crm_app/model/appointment.dart';
 import 'package:crm_app/model/employee.dart';
 import 'package:crm_app/repository/user_repository.dart';
@@ -17,29 +18,20 @@ class AppointmentRepository {
     return repository;
   }
 
-  Future<List<Appointment>> fetchAppointments() async {
+  Future<List<AppointmentViewModel>> fetchAppointments() async {
     String url = '$baseUrl/Appointments';
     String userId = UserRepository.currentUser.id;
     String queryParam = "$url?userId=$userId";
     var result = await http.get(queryParam);
     if (result.statusCode == 200) {
       var mapList = List<Map<String, dynamic>>.from(json.decode(result.body));
-      return Appointment.fromJsonArray(mapList);
+      return AppointmentViewModel.fromJsonArray(mapList);
     } else {
       return null;
     }
   }
 
-  Future<List<Status>> fetchStatuses() async {
-    String url = '$baseUrl/StatusesMaster';
-    var result = await http.get(url);
-    if (result.statusCode == 200) {
-      var mapList = List<Map<String, dynamic>>.from(json.decode(result.body));
-      return Status.fromJsonArray(mapList);
-    } else {
-      return null;
-    }
-  }
+
 
   Future<List<Employee>> fetchEmployees() async {
     String url = '$baseUrl/Employees';
@@ -52,9 +44,10 @@ class AppointmentRepository {
     }
   }
 
-  Future<String> putAppointment(Appointment appointment) async {
+  Future<String> putAppointment(AppointmentViewModel appointmentViewModel) async {
+    appointmentViewModel.updatedById=UserRepository.currentUser.id;
     String url = '$baseUrl/Appointments';
-    String appointmentJson = json.encode(appointment.toJson());
+    String appointmentJson = json.encode(appointmentViewModel.toJson());
     print(appointmentJson);
     var result = await http.put(url,
         headers: {

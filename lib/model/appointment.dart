@@ -1,4 +1,6 @@
 import 'package:crm_app/model/appointment-status.dart';
+import 'package:crm_app/model/appointment-view-model.dart';
+import 'package:crm_app/repository/user_repository.dart';
 
 import 'lead.dart';
 
@@ -39,5 +41,18 @@ class Appointment {
         "AssignedToId": currentStatus.assignedTo.id
       }
     };
+  }
+
+  AppointmentViewModel toAppointmentViewModel() {
+    return new AppointmentViewModel(
+      id:id,
+      statusId: currentStatus.status.id,
+      appointmentDate: appointmentDate,
+      assignedToId: currentStatus.assignedTo.id,
+      comments: currentStatus.comments,
+      dueDate:currentStatus.dueDate,
+      leadId: lead.id,
+      updatedById: UserRepository.currentUser.id
+    );
   }
 }

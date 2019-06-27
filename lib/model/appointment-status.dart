@@ -7,9 +7,10 @@ class AppointmentStatus {
   User assignedTo;
   User updatedBy;
   Status status;
+  DateTime dueDate;
 
   AppointmentStatus(
-      {this.id, this.comments, this.assignedTo, this.updatedBy, this.status});
+      {this.id, this.comments, this.assignedTo, this.updatedBy, this.status,this.dueDate});
 
   static List<AppointmentStatus> fromJsonArray(
       List<Map<String, dynamic>> mapList) {

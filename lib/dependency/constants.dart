@@ -16,4 +16,7 @@ void setMode(bool bIsReleaseMode){
 class Constants {
   static List<Status> statuses;
   static List<Employee> employees;
+  static String formatDate(DateTime date){
+    return "${date.month}/${date.day}/${date.year}";
+  }
 }

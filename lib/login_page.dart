@@ -60,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         key: mainKey,
-        appBar: AppBar(title: Text("Login")),
+        appBar: AppBar(title: Text("Login"),
+        leading: Text(""),),
         body: Stack(
           children: <Widget>[
             Center(child: _loading ? CircularProgressIndicator() : Text("")),

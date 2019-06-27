@@ -1,13 +1,13 @@
 import 'package:crm_app/dependency/constants.dart';
 import 'package:crm_app/login_page.dart';
-import 'package:crm_app/model/appointment-status.dart';
-import 'package:crm_app/model/appointment.dart';
 import 'package:crm_app/repository/appointment_repository.dart';
 import 'package:crm_app/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'edit_appointment_page.dart';
+import 'model/appointment-view-model.dart';
+import 'repository/status_repository.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/home';
@@ -17,17 +17,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Appointment> appointments;
+  List<AppointmentViewModel> appointments;
   AppointmentRepository repository;
+  StatusRepository statusRepository;
 
   @override
   void initState() {
     super.initState();
     repository = AppointmentRepository.getRepository();
-
-    repository.fetchStatuses().then((statuses) {
+    statusRepository = StatusRepository.getRepository();
+    statusRepository.fetchStatuses().then((statuses) {
       Constants.statuses = statuses;
-      print(Constants.statuses);
     });
 
     onRefresh();
@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Text(""),
         title: Text("Home"),
         actions: <Widget>[
           IconButton(
@@ -64,18 +65,18 @@ class _HomePageState extends State<HomePage> {
               : ListView.builder(
                   itemCount: appointments.length,
                   itemBuilder: (context, index) {
-                    Appointment appointment = appointments[index];
-                    AppointmentStatus status = appointment.currentStatus;
+                    AppointmentViewModel appointment = appointments[index];
                     return ListTile(
                         onTap: () {
                           Navigator.pushNamed(
                               context, EditAppointmentPage.routeName,
                               arguments: appointment);
                         },
-                        title: Text(appointment.lead.user.userName),
-                        subtitle: Text(
-                            status.comments != null ? status.comments : ""),
-                        leading: _buildLeading(status),
+                        title: Text(appointment.leadName),
+                        subtitle: Text(appointment.comments != null
+                            ? appointment.comments
+                            : ""),
+                        leading: _buildLeading(appointment),
                         trailing: Icon(Icons.keyboard_arrow_right));
                   }),
           onRefresh: onRefresh),
@@ -87,13 +88,18 @@ class _HomePageState extends State<HomePage> {
     Navigator.popAndPushNamed(context, LoginPage.routeName);
   }
 
-  Widget _buildLeading(AppointmentStatus status) {
-    if (status.status.name == "Open") {
-      return CircleAvatar(
-        child: Icon(FontAwesomeIcons.bookOpen),
-      );
-    } else {
-      return CircleAvatar(child: Icon(FontAwesomeIcons.checkDouble));
+  Widget _buildLeading(AppointmentViewModel appointment) {
+    switch (appointment.status) {
+      case "Open":
+        return CircleAvatar(
+          child: Icon(FontAwesomeIcons.bookOpen),
+        );
+      case "InProgress":
+        return CircleAvatar(child: Icon(FontAwesomeIcons.spinner));
+      case "Closed":
+        return CircleAvatar(child: Icon(FontAwesomeIcons.checkDouble));
+      default:
+        return CircleAvatar(child: Icon(FontAwesomeIcons.checkDouble));
     }
   }
 }
