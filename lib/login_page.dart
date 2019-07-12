@@ -1,6 +1,13 @@
+import 'package:crm_app/home_pages/admin_home_page.dart';
+import 'package:crm_app/home_pages/marketing_home_page.dart';
+import 'package:crm_app/home_pages/tele_home_page.dart';
+import 'package:crm_app/model/user.dart';
 import 'package:crm_app/repository/user_repository.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'dependency/constants.dart';
 
 class LoginPage extends StatefulWidget {
   static const String routeName = '/login';
@@ -17,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   final mainKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
   bool _loggedIn = false;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   bool get loggedIn => _loggedIn;
 
@@ -47,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
       userRepository.validateUser(userName, password).then((user) {
         loading = false;
         UserRepository.currentUser = user;
-        Navigator.pushReplacementNamed(context, '/home');
+        navigateToPage(user);
       }, onError: (error) {
         final snackBar = SnackBar(content: Text(error.toString()));
         this.mainKey.currentState.showSnackBar(snackBar);
@@ -60,8 +68,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         key: mainKey,
-        appBar: AppBar(title: Text("Login"),
-        leading: Text(""),),
+        appBar: AppBar(
+          title: Text("Login"),
+          leading: Text(""),
+        ),
         body: Stack(
           children: <Widget>[
             Center(child: _loading ? CircularProgressIndicator() : Text("")),
@@ -129,5 +139,33 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ],
         ));
+  }
+
+  void updateFirebaseToken() {
+    if (UserRepository.currentUser.token != null) return;
+    _firebaseMessaging.getToken().then((token) {
+      try {
+        if (token == null) return;
+        Constants.token = token;
+      } catch (exception) {
+        print(exception);
+      }
+    });
+  }
+
+  void navigateToPage(User user) {
+    String routeName;
+    switch (user.roleGroup.name) {
+      case "marketing":
+        routeName = MarketingHomePage.routeName;
+        break;
+      case "admin":
+        routeName = AdminHomePage.routeName;
+        break;
+      case "tele":
+        routeName = TeleHomePage.routeName;
+        break;
+    }
+    Navigator.pushReplacementNamed(context, routeName);
   }
 }

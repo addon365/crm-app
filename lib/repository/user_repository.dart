@@ -8,6 +8,12 @@ import 'package:http/http.dart' as http;
 
 class UserRepository {
   static User currentUser;
+  static UserRepository _userRepository;
+
+  static UserRepository getRepository() {
+    if (_userRepository == null) _userRepository = new UserRepository();
+    return _userRepository;
+  }
 
   Future<User> validateUser(String userName, String password) async {
     final String url = '$baseUrl/User/authenticate';
@@ -27,7 +33,7 @@ class UserRepository {
       userDao.insert(user);
       return user;
     } else {
-      var error=json.decode(response.body);
+      var error = json.decode(response.body);
       throw Exception(error["message"]);
     }
   }
@@ -41,5 +47,29 @@ class UserRepository {
   Future<bool> logout() {
     UserDao userDao = new UserDao();
     userDao.deleteUser();
+  }
+
+  void updateTokenToDb(String token) {
+    UserDao userDao = new UserDao();
+    userDao.update(token);
+  }
+
+  void updateToken(String token) async {
+    final String url = '$baseUrl/User/token';
+    String id = currentUser.id;
+    Map<String, dynamic> map = {"Id": id, "token": token};
+
+    var response = await http.put(url,
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: map,
+        encoding: Encoding.getByName("utf-8"));
+    if (response.statusCode == 200) {
+      print("TOken Updated successuflly");
+    } else {
+      throw new Exception("Can't update token");
+    }
   }
 }

@@ -1,8 +1,11 @@
+import 'package:crm_app/home_pages/admin_home_page.dart';
+import 'package:crm_app/home_pages/marketing_home_page.dart';
+import 'package:crm_app/home_pages/tele_home_page.dart';
 import 'package:crm_app/login_page.dart';
 import 'package:crm_app/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import 'model/user.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -17,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
     new UserRepository().getUserSession().then((user) {
       if (user != null) {
         UserRepository.currentUser = user;
-        Navigator.popAndPushNamed(context, HomePage.routeName);
+        navigateToPage(user);
       } else {
         Navigator.popAndPushNamed(context, LoginPage.routeName);
       }
@@ -33,5 +36,21 @@ class _SplashPageState extends State<SplashPage> {
         child: Image.asset("assets/splash.png"),
       ),
     );
+  }
+
+  void navigateToPage(User user) {
+    String routeName;
+    switch (user.roleGroup.name) {
+      case "marketing":
+        routeName = MarketingHomePage.routeName;
+        break;
+      case "admin":
+        routeName = AdminHomePage.routeName;
+        break;
+      case "tele":
+        routeName = TeleHomePage.routeName;
+        break;
+    }
+    Navigator.pushReplacementNamed(context, routeName);
   }
 }

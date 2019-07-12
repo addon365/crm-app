@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:crm_app/dependency/constants.dart';
-import 'package:crm_app/model/Status.dart';
+import 'package:crm_app/model/status.dart';
 import 'package:http/http.dart' as http;
 
 class StatusRepository {

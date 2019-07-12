@@ -1,13 +1,22 @@
-import 'user.dart';
+import 'business_contact.dart';
+import 'lead_history.dart';
 
 class Lead {
   String id;
-  User user;
+  BusinessContact businessContact;
 
-  Lead({this.id, this.user});
+  List<LeadHistory> history;
+
+  Lead({this.id, this.businessContact, this.history});
 
   static Lead fromJson(Map<String, dynamic> map) {
-    return Lead(id: map['id'], user: User.fromJson(map['user']));
+    List<Map<String, dynamic>> history =
+        List<Map<String, dynamic>>.from(map['history']);
+
+    return Lead(
+        id: map['id'],
+        businessContact: BusinessContact.fromJson(map['contact']),
+        history: LeadHistory.fromJsonArray(history));
   }
 
   static List<Lead> fromJsonArray(List<Map<String, dynamic>> mapList) {
@@ -16,5 +25,13 @@ class Lead {
       customers.add(Lead.fromJson(customerMap));
     });
     return customers;
+  }
+
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> historyMap = new List<Map<String, dynamic>>();
+    for (LeadHistory aHistory in history) {
+      historyMap.add(aHistory.toJson());
+    }
+    return {"id": id, "history": historyMap};
   }
 }

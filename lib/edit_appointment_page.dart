@@ -1,14 +1,11 @@
 import 'package:crm_app/dependency/constants.dart';
 import 'package:crm_app/employee_list_page.dart';
-import 'package:crm_app/model/Status.dart';
-import 'package:crm_app/model/appointment-status.dart';
-import 'package:crm_app/model/appointment.dart';
+import 'package:crm_app/model/status.dart';
 import 'package:crm_app/repository/appointment_repository.dart';
-import 'package:crm_app/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'model/appointment-view-model.dart';
+import 'model/appointment_view_model.dart';
 import 'model/user.dart';
 import 'repository/status_repository.dart';
 
@@ -16,11 +13,8 @@ class EditAppointmentPage extends StatefulWidget {
   static const routeName = "/edit-appointment";
   AppointmentViewModel viewModel;
 
-
   EditAppointmentPage(AppointmentViewModel viewModel) {
-
-    this.viewModel=viewModel;
-
+    this.viewModel = viewModel;
   }
 
   @override
@@ -35,17 +29,16 @@ class _EditAppointmentPageState extends State<EditAppointmentPage> {
   final TextEditingController controller = new TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   AppointmentViewModel viewModel;
+
   @override
   void initState() {
     super.initState();
-    statusRepository=StatusRepository.getRepository();
-    viewModel=this.widget.viewModel;
+    statusRepository = StatusRepository.getRepository();
+    viewModel = this.widget.viewModel;
 
-    selectedUser=new User(
-      id: viewModel.assignedToId,
-      userName: viewModel.assignedTo
-    );
-    selectedStatus=statusRepository.findById(viewModel.statusId);
+    selectedUser =
+        new User(id: viewModel.assignedToId, userName: viewModel.assignedTo);
+    selectedStatus = statusRepository.findById(viewModel.statusId);
     AppointmentRepository.getRepository().fetchEmployees().then((employees) {
       Constants.employees = employees;
     });
@@ -53,7 +46,6 @@ class _EditAppointmentPageState extends State<EditAppointmentPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -118,7 +110,7 @@ class _EditAppointmentPageState extends State<EditAppointmentPage> {
     var result = await Navigator.pushNamed(context, EmployeeListPage.routeName);
     if (result != null) {
       setState(() {
-        selectedUser=result;
+        selectedUser = result;
       });
     }
   }
@@ -131,9 +123,9 @@ class _EditAppointmentPageState extends State<EditAppointmentPage> {
       scaffoldKey.currentState.showSnackBar(snackbar);
       return;
     }
-    viewModel.statusId=selectedStatus.id;
-    viewModel.comments=controller.text;
-    viewModel.assignedToId=selectedUser.id;
+    viewModel.statusId = selectedStatus.id;
+    viewModel.comments = controller.text;
+    viewModel.assignedToId = selectedUser.id;
 
     AppointmentRepository.getRepository()
         .putAppointment(viewModel)

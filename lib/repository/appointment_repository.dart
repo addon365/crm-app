@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:crm_app/dependency/constants.dart';
-import 'package:crm_app/model/Status.dart';
-import 'package:crm_app/model/appointment-view-model.dart';
-import 'package:crm_app/model/appointment.dart';
+import 'package:crm_app/model/appointment_view_model.dart';
 import 'package:crm_app/model/employee.dart';
 import 'package:crm_app/repository/user_repository.dart';
 import 'package:http/http.dart' as http;
@@ -31,8 +29,6 @@ class AppointmentRepository {
     }
   }
 
-
-
   Future<List<Employee>> fetchEmployees() async {
     String url = '$baseUrl/Employees';
     var result = await http.get(url);
@@ -44,8 +40,9 @@ class AppointmentRepository {
     }
   }
 
-  Future<String> putAppointment(AppointmentViewModel appointmentViewModel) async {
-    appointmentViewModel.updatedById=UserRepository.currentUser.id;
+  Future<String> putAppointment(
+      AppointmentViewModel appointmentViewModel) async {
+    appointmentViewModel.updatedById = UserRepository.currentUser.id;
     String url = '$baseUrl/Appointments';
     String appointmentJson = json.encode(appointmentViewModel.toJson());
     print(appointmentJson);

@@ -17,7 +17,12 @@ class UserDao extends DbBase {
     final Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query(tableName);
     if (maps.length == 0) return Future.value(null);
-    return Future.value(User.fromJson((maps.elementAt(0))));
+    return Future.value(User.fromDbJson((maps.elementAt(0))));
+  }
+
+  Future<User> update(String token) async {
+    final Database db = await database;
+    db.update(tableName, {"token": token});
   }
 
   Future<int> deleteUser() async {

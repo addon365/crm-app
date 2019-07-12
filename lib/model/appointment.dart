@@ -1,5 +1,5 @@
-import 'package:crm_app/model/appointment-status.dart';
-import 'package:crm_app/model/appointment-view-model.dart';
+import 'package:crm_app/model/appointment_status.dart';
+import 'package:crm_app/model/appointment_view_model.dart';
 import 'package:crm_app/repository/user_repository.dart';
 
 import 'lead.dart';

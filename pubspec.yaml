@@ -14,7 +14,7 @@ description: A CRM application
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -27,6 +27,10 @@ dependencies:
   http: ^0.12.0+1
   sqflite: ^1.1.3
   intl: ^0.15.8
+  firebase_messaging: ^5.0.4
+  url_launcher: ^5.0.3
+  flutter_sound: ^1.4.2
+  path_provider: ^1.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

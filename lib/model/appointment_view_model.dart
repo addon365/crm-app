@@ -1,5 +1,4 @@
 import 'package:crm_app/dependency/constants.dart';
-import 'package:intl/intl.dart';
 
 class AppointmentViewModel {
   String id;
@@ -48,8 +47,6 @@ class AppointmentViewModel {
   }
 
   static AppointmentViewModel fromJson(Map<String, dynamic> map) {
-
-
     return AppointmentViewModel(
       id: map["id"],
       leadId: map["leadId"],
@@ -67,7 +64,7 @@ class AppointmentViewModel {
   }
 
   Map<String, dynamic> toJson() {
-    DateTime d = DateTime.now();
+
     String strDueDate = Constants.formatDate(dueDate);
     String strAppointmentDate = Constants.formatDate(appointmentDate);
     return {

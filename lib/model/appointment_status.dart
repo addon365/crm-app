@@ -1,4 +1,4 @@
-import 'package:crm_app/model/Status.dart';
+import 'package:crm_app/model/status.dart';
 import 'package:crm_app/model/user.dart';
 
 class AppointmentStatus {

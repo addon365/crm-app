@@ -1,35 +1,38 @@
 import 'package:crm_app/dependency/constants.dart';
+import 'package:crm_app/edit_appointment_page.dart';
 import 'package:crm_app/login_page.dart';
+import 'package:crm_app/model/appointment_view_model.dart';
 import 'package:crm_app/repository/appointment_repository.dart';
+import 'package:crm_app/repository/status_repository.dart';
 import 'package:crm_app/repository/user_repository.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'edit_appointment_page.dart';
-import 'model/appointment-view-model.dart';
-import 'repository/status_repository.dart';
 
-class HomePage extends StatefulWidget {
-  static const String routeName = '/home';
+class MarketingHomePage extends StatefulWidget {
+  static const String routeName = '/marketing-home';
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _MarketingHomePageState createState() => _MarketingHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MarketingHomePageState extends State<MarketingHomePage> {
   List<AppointmentViewModel> appointments;
   AppointmentRepository repository;
   StatusRepository statusRepository;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
     super.initState();
-    repository = AppointmentRepository.getRepository();
-    statusRepository = StatusRepository.getRepository();
-    statusRepository.fetchStatuses().then((statuses) {
-      Constants.statuses = statuses;
-    });
 
+    init();
+    updateToken();
+    fetchNecessary();
+    requestPermission();
+
+    configureFireBase();
     onRefresh();
   }
 
@@ -46,17 +49,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Text(""),
-        title: Text("Home"),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(FontAwesomeIcons.signOutAlt),
-              onPressed: () {
-                signOut();
-              }),
-        ],
-      ),
+      appBar:  Constants.getAppBar(context, "Appointments"),
       body: RefreshIndicator(
           child: appointments == null || appointments.length == 0
               ? Center(
@@ -101,5 +94,34 @@ class _HomePageState extends State<HomePage> {
       default:
         return CircleAvatar(child: Icon(FontAwesomeIcons.checkDouble));
     }
+  }
+
+  void requestPermission() {
+    _firebaseMessaging.requestNotificationPermissions();
+  }
+
+  void configureFireBase() {
+    _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
+      print(message);
+    }, onLaunch: (message) {
+      print("OnLaunch $message");
+    }, onResume: (message) {
+      print("OnResume $message");
+    });
+  }
+
+  void init() {
+    repository = AppointmentRepository.getRepository();
+    statusRepository = StatusRepository.getRepository();
+  }
+
+  void fetchNecessary() {
+    statusRepository.fetchStatuses().then((statuses) {
+      Constants.statuses = statuses;
+    });
+  }
+
+  void updateToken() {
+    UserRepository.getRepository().updateToken(Constants.token);
   }
 }
