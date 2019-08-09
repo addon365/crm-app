@@ -9,40 +9,42 @@ class LeadListWidget extends StatefulWidget {
   final List<LeadViewModel> _leadViewModel;
   final Function onSelected;
 
-  LeadListWidget(this._leadViewModel, this.onSelected);
+  final RefreshCallback refresh;
+
+  LeadListWidget(this._leadViewModel, this.onSelected, this.refresh);
 }
 
 class _LeadListWidgetState extends State<LeadListWidget> {
-
-
   @override
   void initState() {
     super.initState();
     init();
   }
 
-  void init() {
-
-  }
+  void init() {}
 
   @override
   Widget build(BuildContext context) {
-    return this.widget._leadViewModel == null
+    return this.widget._leadViewModel == null ||
+            this.widget._leadViewModel.length == 0
         ? Center(
-            child: Text("No Leads Found"),
+            child: InkWell(child: Text("No Leads Found"),onTap: (){this.widget.refresh();},),
           )
-        : ListView.builder(
-            itemCount: this.widget._leadViewModel.length,
-            itemBuilder: (BuildContext context, int index) {
-              var viewModel = this.widget._leadViewModel[index];
-              return ListTile(
-                onTap: () => this.widget.onSelected(index),
-                title: Text(viewModel.companyName),
-                leading: CircleAvatar(
-                  child: Text(viewModel.statusName[0].toUpperCase()),
-                ),
-                trailing: Icon(FontAwesomeIcons.chevronRight),
-              );
-            });
+        : RefreshIndicator(
+            semanticsLabel: "No Leads Found yet",
+            child: ListView.builder(
+                itemCount: this.widget._leadViewModel.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var viewModel = this.widget._leadViewModel[index];
+                  return ListTile(
+                    onTap: () => this.widget.onSelected(index),
+                    title: Text(viewModel.companyName),
+                    leading: CircleAvatar(
+                      child: Text(viewModel.statusName[0].toUpperCase()),
+                    ),
+                    trailing: Icon(FontAwesomeIcons.chevronRight),
+                  );
+                }),
+            onRefresh: this.widget.refresh);
   }
 }

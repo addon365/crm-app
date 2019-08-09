@@ -73,7 +73,7 @@ class LeadRepository {
         },
         body: jsonBody);
     if (result.statusCode == 200) {
-      return Lead.fromJson(json.decode(result.body));
+      return new Lead(); //As update success, we just send lead object for confirmation.
     } else {
       return null;
     }

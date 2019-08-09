@@ -1,5 +1,6 @@
 import 'package:crm_app/edit_appointment_page.dart';
 import 'package:crm_app/routes.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,33 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final FirebaseMessaging _fireBaseMessaging = FirebaseMessaging();
+
+  @override
+  void initState() {
+    super.initState();
+    configureFireBase();
+  }
+
+  void configureFireBase() {
+    _fireBaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
+      print(message);
+      return null;
+    }, onLaunch: (message) {
+      print("OnLaunch $message");
+      return null;
+    }, onResume: (message) {
+      print("OnResume $message");
+      return null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

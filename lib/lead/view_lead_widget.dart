@@ -12,8 +12,10 @@ class ViewLeadWidget extends StatelessWidget {
   final Lead lead;
   final Function updateLeadStatus;
   final LeadRepository leadRepository;
+  final Function move;
 
-  ViewLeadWidget(this.lead, this.updateLeadStatus, this.leadRepository);
+  ViewLeadWidget(
+      this.lead, this.updateLeadStatus, this.leadRepository, this.move);
 
   Widget createTitleWidget(BuildContext context, String title) {
     return Card(
@@ -85,28 +87,32 @@ class ViewLeadWidget extends StatelessWidget {
         ),
       ),
     );
-    final proprietorWidget = Card(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Proprietor Details",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          ListTile(
-            onTap: () => {
-              launch(
-                  "tel://${this.lead.businessContact.proprietor.mobileNumber}")
-            },
-            title: Text("${this.lead.businessContact.proprietor.firstName}"),
-            subtitle:
-                Text("${this.lead.businessContact.proprietor.mobileNumber}"),
-            trailing: Icon(FontAwesomeIcons.phone),
-          )
-        ],
-      ),
-    );
+    final proprietorWidget = this.lead.businessContact.proprietor == null ||
+            this.lead.businessContact.proprietor.firstName == null
+        ? Container()
+        : Card(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Proprietor Details",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                ListTile(
+                  onTap: () => {
+                    launch(
+                        "tel://${this.lead.businessContact.proprietor.mobileNumber}")
+                  },
+                  title:
+                      Text("${this.lead.businessContact.proprietor.firstName}"),
+                  subtitle: Text(
+                      "${this.lead.businessContact.proprietor.mobileNumber}"),
+                  trailing: Icon(FontAwesomeIcons.phone),
+                )
+              ],
+            ),
+          );
     final contactPersonWidget = Card(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -132,28 +138,34 @@ class ViewLeadWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         RaisedButton(
-          onPressed: () {},
-          child: Text("Skip"),
+          onPressed: () {
+            this.move(-1);
+          },
+          child: Text("Previous"),
         ),
         RaisedButton(
           onPressed: () {
             showBottomSheet(context);
           },
           child: Text("Update Status"),
+        ),
+        RaisedButton(
+          onPressed: () {
+            this.move(1);
+          },
+          child: Text("Next"),
         )
       ],
     );
     //endregion
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          companyNameWidget,
-          proprietorWidget,
-          contactPersonWidget,
-          Expanded(child: commentsWidget),
-          buttonBarWidget
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        companyNameWidget,
+        proprietorWidget,
+        contactPersonWidget,
+        Expanded(child: commentsWidget),
+        buttonBarWidget
+      ],
     );
   }
 
