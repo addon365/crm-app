@@ -1,5 +1,5 @@
 import 'package:crm_app/dependency/constants.dart';
-import 'package:crm_app/lead/player_widget.dart';
+
 import 'package:crm_app/model/lead.dart';
 import 'package:crm_app/model/lead_comment.dart';
 import 'package:crm_app/model/lead_history.dart';
@@ -173,7 +173,9 @@ class ViewLeadWidget extends StatelessWidget {
     if (aHistory.extraData == null) return Text("N/A");
     LeadComment leadComment = leadRepository.getLeadComment(aHistory.extraData);
     if (leadComment.type == "audio") {
-      return PlayerWidget(leadComment.comment);
+      //TODO: PlayerWidget error need to be fixed until return empty container
+      //return new PlayerWidget(leadComment.comment);
+      return new Container();
     }
     return Text("${leadComment.comment}");
   }
