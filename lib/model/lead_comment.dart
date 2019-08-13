@@ -1,6 +1,6 @@
 class LeadComment {
-  final String type;
-  final String comment;
+   String type;
+   String comment;
 
   LeadComment({this.type, this.comment});
 

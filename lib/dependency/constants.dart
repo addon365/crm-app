@@ -16,7 +16,7 @@ void setMode(bool bIsReleaseMode) {
     baseUrl = "https://addon365crm.azurewebsites.net/api";
   } else {
 //    baseUrl = "https://addon365crm.azurewebsites.net/api";
-    baseUrl = "http://192.168.0.100:3000/api";
+    baseUrl = "http://192.168.0.102:3000/api";
   }
 }
 

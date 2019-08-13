@@ -11,11 +11,9 @@ import 'repository/status_repository.dart';
 
 class EditAppointmentPage extends StatefulWidget {
   static const routeName = "/edit-appointment";
-  AppointmentViewModel viewModel;
+  final AppointmentViewModel viewModel;
 
-  EditAppointmentPage(AppointmentViewModel viewModel) {
-    this.viewModel = viewModel;
-  }
+  EditAppointmentPage(this.viewModel);
 
   @override
   _EditAppointmentPageState createState() => _EditAppointmentPageState();

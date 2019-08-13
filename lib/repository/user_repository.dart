@@ -47,6 +47,7 @@ class UserRepository {
   Future<bool> logout() {
     UserDao userDao = new UserDao();
     userDao.deleteUser();
+    return Future.value(true);
   }
 
   void updateTokenToDb(String token) {

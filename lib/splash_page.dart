@@ -1,10 +1,11 @@
 import 'package:crm_app/home_pages/admin_home_page.dart';
 import 'package:crm_app/home_pages/marketing_home_page.dart';
-import 'package:crm_app/home_pages/tele_home_page.dart';
+
 import 'package:crm_app/login_page.dart';
 import 'package:crm_app/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 
+import 'lead_pages/campaign_list_page.dart';
 import 'model/user.dart';
 
 class SplashPage extends StatefulWidget {
@@ -48,9 +49,9 @@ class _SplashPageState extends State<SplashPage> {
         routeName = AdminHomePage.routeName;
         break;
       case "tele":
-        routeName = TeleHomePage.routeName;
+        routeName = CampaignListPage.routeName;
         break;
     }
-    Navigator.pushReplacementNamed(context, routeName);
+    Navigator.popAndPushNamed(context, routeName);
   }
 }

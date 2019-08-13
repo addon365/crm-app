@@ -50,13 +50,9 @@ class LeadRepository {
     }
   }
 
-  LeadComment getLeadComment(String leadCommentJson){
-    var leadComment=LeadComment.fromJson(json.decode(leadCommentJson));
-    if(leadComment.type=="text")
-      return leadComment;
-    else{
-
-    }
+  LeadComment getLeadComment(String leadCommentJson) {
+    var leadComment = LeadComment.fromJson(json.decode(leadCommentJson));
+    return leadComment;
   }
 
   Future<Lead> updateLeadHistory(Lead lead) async {

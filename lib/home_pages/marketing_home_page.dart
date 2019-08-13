@@ -103,10 +103,13 @@ class _MarketingHomePageState extends State<MarketingHomePage> {
   void configureFireBase() {
     _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
       print(message);
+      return null;
     }, onLaunch: (message) {
       print("OnLaunch $message");
+      return null;
     }, onResume: (message) {
       print("OnResume $message");
+      return null;
     });
   }
 

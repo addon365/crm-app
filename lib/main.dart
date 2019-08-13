@@ -1,11 +1,15 @@
 import 'package:crm_app/edit_appointment_page.dart';
+import 'package:crm_app/lead_pages/campaign_info_view_page.dart';
+
 import 'package:crm_app/routes.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'dependency/constants.dart';
+import 'lead_pages/campaign_info_list_page.dart';
 import 'model/appointment_view_model.dart';
+import 'model/view/campaign_view_model.dart';
 
 void main() {
   setMode(kReleaseMode);
@@ -55,6 +59,17 @@ class _MyAppState extends State<MyApp> {
             return MaterialPageRoute(builder: (BuildContext context) {
               final AppointmentViewModel appointment = settings.arguments;
               return EditAppointmentPage(appointment);
+            });
+          case CampaignInfoListPage.routeName:
+            return MaterialPageRoute(builder: (BuildContext context) {
+              final CampaignViewModel campaignViewModel = settings.arguments;
+              return CampaignInfoListPage(campaignViewModel);
+            });
+            break;
+          case CampaignInfoViewPage.routeName:
+            return MaterialPageRoute(builder: (BuildContext context) {
+              final CampaignViewModel campaignViewModel = settings.arguments;
+              return CampaignInfoViewPage(campaignViewModel);
             });
             break;
         }

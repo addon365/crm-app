@@ -23,6 +23,7 @@ class UserDao extends DbBase {
   Future<User> update(String token) async {
     final Database db = await database;
     db.update(tableName, {"token": token});
+    return null;
   }
 
   Future<int> deleteUser() async {

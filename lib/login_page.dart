@@ -1,6 +1,6 @@
 import 'package:crm_app/home_pages/admin_home_page.dart';
 import 'package:crm_app/home_pages/marketing_home_page.dart';
-import 'package:crm_app/home_pages/tele_home_page.dart';
+
 import 'package:crm_app/model/user.dart';
 import 'package:crm_app/repository/user_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'dependency/constants.dart';
+
+import 'lead_pages/campaign_list_page.dart';
 
 class LoginPage extends StatefulWidget {
   static const String routeName = '/login';
@@ -163,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
         routeName = AdminHomePage.routeName;
         break;
       case "tele":
-        routeName = TeleHomePage.routeName;
+        routeName = CampaignListPage.routeName;
         break;
     }
     Navigator.pushReplacementNamed(context, routeName);
