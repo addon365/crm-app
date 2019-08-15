@@ -1,3 +1,4 @@
+import 'package:crm_app/db/widget/app-drawer-widget.dart';
 import 'package:crm_app/lead_pages/campaign_list_page.dart';
 import 'package:crm_app/model/view/campaign_info_view_model.dart';
 import 'package:crm_app/model/view/campaign_view_model.dart';
@@ -25,6 +26,7 @@ class CampaignInfoListPage extends StatelessWidget {
         return Future.value(false);
       },
       child: Scaffold(
+        drawer: AppDrawerWidget(),
         appBar: AppBar(
           titleSpacing: 0.0,
           title: ListTile(
@@ -57,13 +59,19 @@ class CampaignInfoListPage extends StatelessWidget {
                 },
               ),
             ),
-            RaisedButton(
-              onPressed: () => {
-                Navigator.of(context).pushReplacementNamed(
-                    CampaignInfoViewPage.routeName,
-                    arguments: _campaignViewModel)
-              },
-              child: Text("Start Campaign"),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: RaisedButton(
+                    onPressed: () => {
+                      Navigator.of(context).pushReplacementNamed(
+                          CampaignInfoViewPage.routeName,
+                          arguments: _campaignViewModel)
+                    },
+                    child: Text("Start Campaign"),
+                  ),
+                ),
+              ],
             )
           ],
         ),

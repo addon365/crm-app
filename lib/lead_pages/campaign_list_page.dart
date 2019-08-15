@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:crm_app/db/widget/app-drawer-widget.dart';
 import 'package:crm_app/model/view/campaign_view_model.dart';
 import 'package:crm_app/repository/campaign_repository.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,9 @@ class CampaignListPage extends StatelessWidget {
   }
 
   Future<bool> _onWillPop(BuildContext context) {
+    if (Navigator.canPop(context)) {
+      return Future.value(true);
+    }
     return showDialog(
           context: context,
           builder: (context) => new AlertDialog(
@@ -55,6 +59,7 @@ class CampaignListPage extends StatelessWidget {
         return _onWillPop(context);
       },
       child: Scaffold(
+        drawer: AppDrawerWidget(),
         appBar: AppBar(
           title: Text("Campaign List"),
         ),

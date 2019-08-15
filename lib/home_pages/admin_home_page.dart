@@ -1,6 +1,7 @@
 import 'package:crm_app/dependency/constants.dart';
 import 'package:crm_app/home_pages/marketing_home_page.dart';
-import 'package:crm_app/home_pages/tele_home_page.dart';
+
+import 'package:crm_app/lead_pages/campaign_list_page.dart';
 import 'package:flutter/material.dart';
 
 class AdminHomePage extends StatelessWidget {
@@ -23,7 +24,7 @@ class AdminHomePage extends StatelessWidget {
             RaisedButton(
                 child: Text("Leads"),
                 onPressed: () {
-                  navigateTo(context, TeleHomePage.routeName);
+                  navigateTo(context, CampaignListPage.routeName);
                 })
           ],
         ),

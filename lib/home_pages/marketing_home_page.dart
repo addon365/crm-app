@@ -5,10 +5,9 @@ import 'package:crm_app/model/appointment_view_model.dart';
 import 'package:crm_app/repository/appointment_repository.dart';
 import 'package:crm_app/repository/status_repository.dart';
 import 'package:crm_app/repository/user_repository.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 
 class MarketingHomePage extends StatefulWidget {
   static const String routeName = '/marketing-home';
@@ -21,18 +20,15 @@ class _MarketingHomePageState extends State<MarketingHomePage> {
   List<AppointmentViewModel> appointments;
   AppointmentRepository repository;
   StatusRepository statusRepository;
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
     super.initState();
 
     init();
-    updateToken();
-    fetchNecessary();
-    requestPermission();
 
-    configureFireBase();
+    fetchNecessary();
+
     onRefresh();
   }
 
@@ -49,7 +45,7 @@ class _MarketingHomePageState extends State<MarketingHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  Constants.getAppBar(context, "Appointments"),
+      appBar: Constants.getAppBar(context, "Appointments"),
       body: RefreshIndicator(
           child: appointments == null || appointments.length == 0
               ? Center(
@@ -94,23 +90,6 @@ class _MarketingHomePageState extends State<MarketingHomePage> {
       default:
         return CircleAvatar(child: Icon(FontAwesomeIcons.checkDouble));
     }
-  }
-
-  void requestPermission() {
-    _firebaseMessaging.requestNotificationPermissions();
-  }
-
-  void configureFireBase() {
-    _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
-      print(message);
-      return null;
-    }, onLaunch: (message) {
-      print("OnLaunch $message");
-      return null;
-    }, onResume: (message) {
-      print("OnResume $message");
-      return null;
-    });
   }
 
   void init() {
