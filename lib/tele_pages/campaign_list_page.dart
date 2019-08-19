@@ -29,9 +29,6 @@ class CampaignListPage extends StatelessWidget {
   }
 
   Future<bool> _onWillPop(BuildContext context) {
-    if (Navigator.canPop(context)) {
-      return Future.value(true);
-    }
     return showDialog(
           context: context,
           builder: (context) => new AlertDialog(
@@ -83,7 +80,7 @@ class CampaignListPage extends StatelessWidget {
   }
 
   navigateTo(BuildContext context, CampaignViewModel campaignVm) {
-    Navigator.popAndPushNamed(context, CampaignInfoListPage.routeName,
+    Navigator.pushNamed(context, CampaignInfoListPage.routeName,
         arguments: campaignVm);
   }
 }

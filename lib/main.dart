@@ -1,13 +1,14 @@
-import 'package:crm_app/edit_appointment_page.dart';
-import 'package:crm_app/lead_pages/campaign_info_view_page.dart';
+import 'package:crm_app/marketing_pages/edit_appointment_page.dart';
 
 import 'package:crm_app/routes.dart';
+import 'package:crm_app/tele_pages/campaign_info_list_page.dart';
+import 'package:crm_app/tele_pages/campaign_info_view_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'dependency/constants.dart';
-import 'lead_pages/campaign_info_list_page.dart';
+
 import 'model/appointment_view_model.dart';
 import 'model/view/campaign_view_model.dart';
 

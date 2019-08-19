@@ -1,11 +1,12 @@
-import 'package:crm_app/home_pages/admin_home_page.dart';
-import 'package:crm_app/home_pages/marketing_home_page.dart';
-
+import 'package:crm_app/admin_pages/admin_home_page.dart';
 import 'package:crm_app/login_page.dart';
+import 'package:crm_app/marketing_pages/marketing_home_page.dart';
 import 'package:crm_app/repository/user_repository.dart';
+import 'package:crm_app/tele_pages/campaign_list_page.dart';
 import 'package:flutter/material.dart';
 
-import 'lead_pages/campaign_list_page.dart';
+import 'dependency/constants.dart';
+
 import 'model/user.dart';
 
 class SplashPage extends StatefulWidget {
@@ -20,13 +21,13 @@ class _SplashPageState extends State<SplashPage> {
 
     new UserRepository().getUserSession().then((user) {
       if (user != null) {
-        UserRepository.currentUser = user;
+        currentUser = user;
         navigateToPage(user);
       } else {
-        Navigator.popAndPushNamed(context, LoginPage.routeName);
+        Navigator.pushReplacementNamed(context, LoginPage.routeName);
       }
     }).catchError((onError) {
-      Navigator.popAndPushNamed(context, LoginPage.routeName);
+      Navigator.pushReplacementNamed(context, LoginPage.routeName);
     });
   }
 
@@ -52,6 +53,6 @@ class _SplashPageState extends State<SplashPage> {
         routeName = CampaignListPage.routeName;
         break;
     }
-    Navigator.popAndPushNamed(context, routeName);
+    Navigator.pushReplacementNamed(context, routeName);
   }
 }

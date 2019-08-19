@@ -1,5 +1,5 @@
+import 'package:crm_app/db/widget/app-drawer-widget.dart';
 import 'package:crm_app/dependency/constants.dart';
-import 'package:crm_app/lead_pages/dialog/comment_dialog.dart';
 
 import 'package:crm_app/model/campaign.dart';
 import 'package:crm_app/model/lead.dart';
@@ -16,6 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 
 import 'campaign_info_list_page.dart';
+import 'dialog/comment_dialog.dart';
 
 class CampaignInfoViewPage extends StatefulWidget {
   static const routeName = "/campaign-info-view-page";
@@ -229,6 +230,7 @@ class _CampaignInfoViewPageState extends State<CampaignInfoViewPage> {
         return Future.value(true);
       },
       child: Scaffold(
+          drawer: AppDrawerWidget(),
           key: scaffoldKey,
           appBar: AppBar(
             titleSpacing: 0.0,

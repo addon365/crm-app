@@ -1,15 +1,15 @@
-import 'package:crm_app/home_pages/admin_home_page.dart';
-import 'package:crm_app/home_pages/marketing_home_page.dart';
-
+import 'package:crm_app/admin_pages/admin_home_page.dart';
+import 'package:crm_app/marketing_pages/marketing_home_page.dart';
 import 'package:crm_app/model/user.dart';
 import 'package:crm_app/repository/user_repository.dart';
+import 'package:crm_app/tele_pages/campaign_list_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'dependency/constants.dart';
 
-import 'lead_pages/campaign_list_page.dart';
+
 
 class LoginPage extends StatefulWidget {
   static const String routeName = '/login';
@@ -56,7 +56,8 @@ class _LoginPageState extends State<LoginPage> {
       loading = true;
       userRepository.validateUser(userName, password).then((user) {
         loading = false;
-        UserRepository.currentUser = user;
+        currentUser = user;
+
         navigateToPage(user);
       }, onError: (error) {
         final snackBar = SnackBar(content: Text(error.toString()));
@@ -92,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.all(18.0),
                       child: Center(
                           child: Text(
-                        "Employee Login",
+                        "Login",
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       )),
@@ -144,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void updateFirebaseToken() {
-    if (UserRepository.currentUser.token != null) return;
+    if (currentUser.token != null) return;
     _firebaseMessaging.getToken().then((token) {
       try {
         if (token == null) return;

@@ -1,6 +1,7 @@
+import 'package:crm_app/dependency/constants.dart';
 import 'package:crm_app/model/appointment_status.dart';
 import 'package:crm_app/model/appointment_view_model.dart';
-import 'package:crm_app/repository/user_repository.dart';
+
 
 import 'lead.dart';
 
@@ -45,14 +46,13 @@ class Appointment {
 
   AppointmentViewModel toAppointmentViewModel() {
     return new AppointmentViewModel(
-      id:id,
-      statusId: currentStatus.status.id,
-      appointmentDate: appointmentDate,
-      assignedToId: currentStatus.assignedTo.id,
-      comments: currentStatus.comments,
-      dueDate:currentStatus.dueDate,
-      leadId: lead.id,
-      updatedById: UserRepository.currentUser.id
-    );
+        id: id,
+        statusId: currentStatus.status.id,
+        appointmentDate: appointmentDate,
+        assignedToId: currentStatus.assignedTo.id,
+        comments: currentStatus.comments,
+        dueDate: currentStatus.dueDate,
+        leadId: lead.id,
+        updatedById: currentUser.id);
   }
 }

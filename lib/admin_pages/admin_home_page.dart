@@ -1,7 +1,10 @@
-import 'package:crm_app/dependency/constants.dart';
-import 'package:crm_app/home_pages/marketing_home_page.dart';
+import 'package:crm_app/db/widget/app-drawer-widget.dart';
 
-import 'package:crm_app/lead_pages/campaign_list_page.dart';
+
+
+
+import 'package:crm_app/marketing_pages/marketing_home_page.dart';
+import 'package:crm_app/tele_pages/campaign_list_page.dart';
 import 'package:flutter/material.dart';
 
 class AdminHomePage extends StatelessWidget {
@@ -10,7 +13,10 @@ class AdminHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Constants.getAppBar(context, "Admin Home"),
+      drawer: AppDrawerWidget(),
+      appBar: AppBar(
+        title: Text("Home"),
+      ),
       body: new Center(
         child: ButtonBar(
           alignment: MainAxisAlignment.center,
@@ -22,7 +28,7 @@ class AdminHomePage extends StatelessWidget {
               child: Text("Appointments"),
             ),
             RaisedButton(
-                child: Text("Leads"),
+                child: Text("Campaigns"),
                 onPressed: () {
                   navigateTo(context, CampaignListPage.routeName);
                 })

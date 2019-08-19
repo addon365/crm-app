@@ -1,13 +1,12 @@
 import 'package:crm_app/dependency/constants.dart';
 import 'package:crm_app/employee_list_page.dart';
+import 'package:crm_app/model/appointment_view_model.dart';
 import 'package:crm_app/model/status.dart';
+import 'package:crm_app/model/user.dart';
 import 'package:crm_app/repository/appointment_repository.dart';
+import 'package:crm_app/repository/status_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import 'model/appointment_view_model.dart';
-import 'model/user.dart';
-import 'repository/status_repository.dart';
 
 class EditAppointmentPage extends StatefulWidget {
   static const routeName = "/edit-appointment";
@@ -44,61 +43,66 @@ class _EditAppointmentPageState extends State<EditAppointmentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-        title: Text("Edit Appointment"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              title: Text(selectedUser.userName,
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              trailing: Icon(FontAwesomeIcons.chevronRight),
-              onTap: chooseCustomer,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Appointment Status",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                DropdownButton<Status>(
-                  value: selectedStatus,
-                  items: Constants.statuses
-                      .map<DropdownMenuItem<Status>>((status) {
-                    return DropdownMenuItem<Status>(
-                        value: status, child: Text(status.name));
-                  }).toList(),
-                  onChanged: (Status status) {
-                    setState(() {
-                      selectedStatus = status;
-                    });
-                  },
-                ),
-              ],
-            ),
-            TextField(
-              controller: controller,
-              decoration: InputDecoration(labelText: "Comments"),
-              maxLines: 3,
-              minLines: 1,
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: RaisedButton(
-                    color: Theme.of(context).primaryColor,
-                    onPressed: save,
-                    child: Text("Save"),
+    return WillPopScope(
+      onWillPop: () {
+        return Future.value(true);
+      },
+      child: Scaffold(
+        key: scaffoldKey,
+        appBar: AppBar(
+          title: Text("Edit Appointment"),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                title: Text(selectedUser.userName,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                trailing: Icon(FontAwesomeIcons.chevronRight),
+                onTap: chooseCustomer,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Appointment Status",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                ),
-              ],
-            )
-          ],
+                  DropdownButton<Status>(
+                    value: selectedStatus,
+                    items: Constants.statuses
+                        .map<DropdownMenuItem<Status>>((status) {
+                      return DropdownMenuItem<Status>(
+                          value: status, child: Text(status.name));
+                    }).toList(),
+                    onChanged: (Status status) {
+                      setState(() {
+                        selectedStatus = status;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              TextField(
+                controller: controller,
+                decoration: InputDecoration(labelText: "Comments"),
+                maxLines: 3,
+                minLines: 1,
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: RaisedButton(
+                      color: Theme.of(context).primaryColor,
+                      onPressed: save,
+                      child: Text("Save"),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

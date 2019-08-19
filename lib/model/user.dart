@@ -16,22 +16,22 @@ class User {
       this.token,
       this.roleGroup});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null;
+  factory User.fromJson(Map<String, dynamic> map) {
+    if (map == null) return null;
     return User(
-        id: json['id'],
-        userId: json['userId'],
-        userName: json['userName'],
-        roleGroup: RoleGroup.fromJson(json['roleGroup']));
+        id: map['id'],
+        userId: map['userId'],
+        userName: map['userName'],
+        roleGroup: RoleGroup.fromJson(map['roleGroup']));
   }
 
-  factory User.fromDbJson(Map<String, dynamic> json) {
-    if (json == null) return null;
+  factory User.fromDbJson(Map<String, dynamic> map) {
+    if (map == null) return null;
     return User(
-        id: json['id'],
-        userId: json['userId'],
-        userName: json['userName'],
-        roleGroup: new RoleGroup(id: json['roleId'], name: json['roleName']));
+        id: map['id'],
+        userName: map['userName'],
+        token: map['token'],
+        roleGroup: new RoleGroup(id: map['roleId'], name: map['roleName']));
   }
 
   Map<String, dynamic> toDb() {

@@ -1,5 +1,5 @@
 import 'package:crm_app/db/widget/app-drawer-widget.dart';
-import 'package:crm_app/lead_pages/campaign_list_page.dart';
+
 import 'package:crm_app/model/view/campaign_info_view_model.dart';
 import 'package:crm_app/model/view/campaign_view_model.dart';
 import 'package:crm_app/repository/campaign_repository.dart';
@@ -22,8 +22,7 @@ class CampaignInfoListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.of(context).popAndPushNamed(CampaignListPage.routeName);
-        return Future.value(false);
+        return Future.value(true);
       },
       child: Scaffold(
         drawer: AppDrawerWidget(),

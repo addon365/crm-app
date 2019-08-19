@@ -14,6 +14,6 @@ class DbBase {
 
   static FutureOr<void> createTables(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE Users(id TEXT PRIMARY KEY,username TEXT,token TEXT,roleId TEXT,roleName TEXT)");
+        "CREATE TABLE Users(id TEXT PRIMARY KEY,userName TEXT,token TEXT,roleId TEXT,roleName TEXT)");
   }
 }

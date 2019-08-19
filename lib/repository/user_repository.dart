@@ -7,7 +7,6 @@ import 'package:crm_app/model/user.dart';
 import 'package:http/http.dart' as http;
 
 class UserRepository {
-  static User currentUser;
   static UserRepository _userRepository;
 
   static UserRepository getRepository() {
@@ -15,7 +14,7 @@ class UserRepository {
     return _userRepository;
   }
 
-  Future<User> validateUser(String userName, String password) async {
+  Future<dynamic> validateUser(String userName, String password) async {
     final String url = '$baseUrl/User/authenticate';
     Map<String, dynamic> map = {"userId": userName, "password": password};
 
@@ -34,7 +33,7 @@ class UserRepository {
       return user;
     } else {
       var error = json.decode(response.body);
-      throw Exception(error["message"]);
+      return Future.error(error["Message"]);
     }
   }
 

@@ -1,4 +1,6 @@
+import 'package:crm_app/dependency/constants.dart';
 import 'package:crm_app/repository/user_repository.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../login_page.dart';
@@ -6,30 +8,63 @@ import '../../login_page.dart';
 class AppDrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        DrawerHeader(
-          child: Text('Drawer Header'),
-          decoration: BoxDecoration(
-            color: Colors.blue,
+    return Drawer(
+      child: ListView(
+        children: <Widget>[
+          DrawerHeader(
+            child: ListTile(
+                contentPadding: EdgeInsets.all(0.0),
+                leading: getRoleWidget(currentUser.roleGroup.name),
+                title: Text(
+                  currentUser.userName,
+                  style: TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  "Role - ${currentUser.roleGroup.name}",
+                  style: TextStyle(color: Colors.white),
+                )),
+            decoration: BoxDecoration(
+              color: Colors.red,
+            ),
           ),
-        ),
-        ListTile(
-          title: Text('Logout'),
-          onTap: () {
-            UserRepository userRepository = UserRepository.getRepository();
-            userRepository.logout();
-            Navigator.of(context).popAndPushNamed(LoginPage.routeName);
-          },
-        ),
-        ListTile(
-          title: Text('Close drawer'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        )
-      ],
+          ListTile(
+            trailing: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: () {
+              UserRepository userRepository = UserRepository.getRepository();
+              userRepository.logout();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  LoginPage.routeName, (Route<dynamic> route) => false);
+            },
+          ),
+        ],
+      ),
     );
+  }
+
+  Widget getRoleWidget(String roleName) {
+    switch (roleName) {
+      case "admin":
+        return CircleAvatar(
+          radius: 40,
+          child: Image.asset(
+            'assets/images/admin_face.png',
+          ),
+        );
+      case "tele":
+        return CircleAvatar(
+          radius: 40,
+          child: Image.asset(
+            'assets/images/tele_caller_face.png',
+          ),
+        );
+      default:
+        return CircleAvatar(
+          radius: 40,
+          child: Image.asset(
+            'assets/images/service_person_face.png',
+          ),
+        );
+    }
   }
 }

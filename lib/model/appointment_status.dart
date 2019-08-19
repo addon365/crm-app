@@ -10,7 +10,12 @@ class AppointmentStatus {
   DateTime dueDate;
 
   AppointmentStatus(
-      {this.id, this.comments, this.assignedTo, this.updatedBy, this.status,this.dueDate});
+      {this.id,
+      this.comments,
+      this.assignedTo,
+      this.updatedBy,
+      this.status,
+      this.dueDate});
 
   static List<AppointmentStatus> fromJsonArray(
       List<Map<String, dynamic>> mapList) {
@@ -31,8 +36,8 @@ class AppointmentStatus {
   }
 
   void copyFrom(AppointmentStatus appointmentStatus) {
-    assignedTo=appointmentStatus.assignedTo;
-    updatedBy=appointmentStatus.updatedBy;
-    status=appointmentStatus.status;
+    assignedTo = appointmentStatus.assignedTo;
+    updatedBy = appointmentStatus.updatedBy;
+    status = appointmentStatus.status;
   }
 }
