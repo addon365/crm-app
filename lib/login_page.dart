@@ -1,5 +1,6 @@
 import 'package:crm_app/admin_pages/admin_home_page.dart';
 import 'package:crm_app/marketing_pages/marketing_home_page.dart';
+import 'package:crm_app/model/role_group.dart';
 import 'package:crm_app/model/user.dart';
 import 'package:crm_app/repository/user_repository.dart';
 import 'package:crm_app/tele_pages/campaign_list_page.dart';
@@ -8,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'dependency/constants.dart';
-
-
 
 class LoginPage extends StatefulWidget {
   static const String routeName = '/login';
@@ -158,6 +157,13 @@ class _LoginPageState extends State<LoginPage> {
 
   void navigateToPage(User user) {
     String routeName;
+
+    if (user.roleGroup == null) {
+      //TODO: Need to support tool grop in WebAPI License.
+      user.roleGroup = new RoleGroup();
+      user.roleGroup.id = "";
+      user.roleGroup.name = "admin";
+    }
     switch (user.roleGroup.name) {
       case "marketing":
         routeName = MarketingHomePage.routeName;

@@ -6,7 +6,7 @@ class User {
   final String userName;
   final String password;
   final String token;
-  final RoleGroup roleGroup;
+   RoleGroup roleGroup;
 
   User(
       {this.id,

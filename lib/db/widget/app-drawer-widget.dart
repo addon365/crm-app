@@ -1,7 +1,9 @@
 import 'package:crm_app/dependency/constants.dart';
+import 'package:crm_app/pages/license_generator_page.dart';
 import 'package:crm_app/repository/user_repository.dart';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../login_page.dart';
 
@@ -26,6 +28,13 @@ class AppDrawerWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.red,
             ),
+          ),
+          ListTile(
+            title: Text("License Generator"),
+            trailing: Icon(FontAwesomeIcons.key),
+            onTap: () {
+              Navigator.pushNamed(context, LicenseGeneratorPage.routeName);
+            },
           ),
           ListTile(
             trailing: Icon(Icons.exit_to_app),
